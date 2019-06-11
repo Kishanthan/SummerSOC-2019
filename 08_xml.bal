@@ -1,4 +1,4 @@
-function main(string... args) {
+public function main() {
     
     // a simple XML
     xml x1 = xml`<name>John</name>`;
@@ -28,7 +28,7 @@ function main(string... args) {
     string id = x2@["id"];
 
     // get all the attributes as a map
-    map attributes = <map> x2@;
+    map<string> attributes = <map<string>> x2@;
 
     // set children
     x1.setChildren(x3);

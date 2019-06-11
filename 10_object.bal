@@ -3,15 +3,18 @@ type Person object {
    int age;
 
    // constructor method
-   new(name, age) {}
+   function __init(string name, int age) {
+       self.name = name;
+       self.age = age;
+   }
 
    // member function
    function getName() returns string {
-       return name;
+       return self.name;
    }
 };
 
-function main(string... args) {
+public function main() {
     Person p1 = new ("John", 50);
     Person p2 = new Person("Doe", 40);
 

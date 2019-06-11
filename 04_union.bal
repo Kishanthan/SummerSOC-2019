@@ -1,4 +1,4 @@
-function main (string... args) {
+public function main () {
     string|int|() value = 5;
     value = "foo";
     value = ();

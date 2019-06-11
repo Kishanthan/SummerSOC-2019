@@ -1,9 +1,9 @@
 import ballerina/io;
 
-function main(string... args) {
+public function main() {
     int value = 10;
     
-    if(value > 0) {
+    if (value > 0) {
         io:println("positive number");
     } else if (value < 0) {
         io:println("negative number");

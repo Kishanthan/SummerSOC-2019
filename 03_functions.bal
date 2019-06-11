@@ -11,7 +11,7 @@ function defaultableParams(int a, string op = "inc") {
 function restParams(int a, string... names) {
 }
 
-function main(string... args) {
+public function main() {
     var result = simpleFunc(4);
 
     defaultableParams(5, op = "dec");

@@ -1,6 +1,6 @@
 import ballerina/io;
 
-function main(string... args) {
+public function main() {
 
     // Asynchronously invoke mergeSort.  
     future<int[]> result = start mergeSort([6, 2, 8]);
@@ -8,7 +8,7 @@ function main(string... args) {
     // do something
 
     // Wait on result
-    int[] sortedArray = await result;
+    int[] sortedArray = wait result;
 
 }
 

@@ -2,10 +2,10 @@
 type Person record {
    string name;
    int age;
-   map address;
+   map<string> address = {};
 };
 
-function main (string... args) {
+public function main () {
     Person p = { name:"John", age:50 };
 
     // map

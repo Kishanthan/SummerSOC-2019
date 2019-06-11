@@ -1,21 +1,30 @@
 import ballerina/io;
+import ballerina/transactions;
 
-function main(string... args) {
-
-    int status = 0;
-
-    transaction with retries = 2 {
-        // do something
-        if (status == -1) {
-            abort;
+public function main() {
+    transaction {
+        var res = trap localTransactionParticipant();
+        if (res is error) {
+            io:println("Local participant panicked.");
         }
-
-        if (status == 1) {
-            retry;
-        }
-
     } onretry {
-        // do something before retrying
-        io:println("im going to try again");
+        io:println("Retrying transaction");
+    } committed {
+        io:println("Transaction committed");
+    } aborted {
+        io:println("Transaction aborted");
     }
+}
+
+@transactions:Participant {
+    oncommit: participantOnCommit
+}
+function localTransactionParticipant() {
+    io:println("Invoke local participant function.");
+    error er = error("Simulated Failure");
+    panic er;
+}
+
+function participantOnCommit(string transactionId) {
+    io:println("Local participant committed function handler...");
 }

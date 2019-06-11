@@ -1,6 +1,6 @@
 import ballerina/io;
 
-function main (string... args) {
+public function main () {
     // while loop
     int i = 0;
     while(i < 10) {
@@ -10,12 +10,12 @@ function main (string... args) {
         if (i == 7) {
             break;
         }
-        i++;
+        i += 1;
     }
 
     // foreach loop
     string[] colors= ["red", "blue", "white"];
-    foreach item in colors {
+    foreach var item in colors {
         io:println(item);
     }
 

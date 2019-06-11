@@ -1,14 +1,10 @@
 int total = 99;
 
-public int count;
+final string OK = "ok";
 
-@final
-public string OK = "ok";
+public const int status = 1;
 
-@readonly
-public int status = 1;
-
-function main(string... args) {
+public function main() {
     string name = "Ballerina";
     var age = 3;
 }

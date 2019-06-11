@@ -1,4 +1,4 @@
-function main (string... args) {
+public function main () {
 
     // Arrays.
     int[] a = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -6,7 +6,7 @@ function main (string... args) {
     a[999] = 100;
 
     string[2] b = ["apple", "orange"];
-    string[!...] c = ["apple", "orange"];
+    string[*] c = ["apple", "orange"];
 
     // Tuple
     (int, string, int) tuple = (1, "value", 5);

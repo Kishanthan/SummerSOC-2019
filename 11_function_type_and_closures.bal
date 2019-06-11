@@ -1,17 +1,17 @@
-function main(string... args) {
+public function main() {
     int a = 2;
 
-    var outerFunc = (int x) => int {
+    var outerFunc = function (int x) returns int {
         int b = 18;
         
-        function (int) innerFunc = (int y) => () {
-            a++;
-            b--;
+        function (int) innerFunc = function (int y) returns () {
+            a += 1;
+            b -= 1;
         };
 
         return b;
     };
 
     // invoking the function using the variable
-    int result = outerFunc(2);
+    int result = outerFunc.call(2);
 }
