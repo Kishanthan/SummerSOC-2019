@@ -1,11 +1,15 @@
 import ballerina/http;
 import ballerina/log;
-http:Client clientEP = new("http://localhost:7090",
-    config = { httpVersion: "2.0" });
+
+// Create an HTTP client endpoint that can send HTTP/2 messages.
+// HTTP version is set to 2.0.
+http:Client clientEP = new("http://localhost:7090", config = { httpVersion: "2.0" });
 
 public function main() {
+
     http:Request serviceReq = new;
     http:HttpFuture httpFuture = new;
+    // Submit a request.
     var submissionResult = clientEP->submit("GET", "/http2Service", serviceReq);
 
     if (submissionResult is http:HttpFuture) {
@@ -15,12 +19,15 @@ public function main() {
             err = submissionResult);
         return;
     }
+
     http:PushPromise?[] promises = [];
     int promiseCount = 0;
+    // Check if promises exists.
     boolean hasPromise = clientEP->hasPromise(httpFuture);
 
     while (hasPromise) {
         http:PushPromise pushPromise = new;
+        // Get the next promise.
         var nextPromiseResult = clientEP->getNextPromise(httpFuture);
 
         if (nextPromiseResult is http:PushPromise) {
@@ -31,18 +38,24 @@ public function main() {
             return;
         }
         log:printInfo("Received a promise for " + pushPromise.path);
+
         if (pushPromise.path == "/resource2") {
+            // The client is not interested in receiving `/resource2`.
+            // Therefore, reject the promise.
             clientEP->rejectPromise(pushPromise);
 
             log:printInfo("Push promise for resource2 rejected");
         } else {
+            // Store the required promises.
             promises[promiseCount] = pushPromise;
 
             promiseCount = promiseCount + 1;
         }
         hasPromise = clientEP->hasPromise(httpFuture);
     }
+
     http:Response response = new;
+    // Get the requested resource.
     var result = clientEP->getResponse(httpFuture);
 
     if (result is http:Response) {
@@ -52,6 +65,7 @@ public function main() {
             err = result);
         return;
     }
+
     var responsePayload = response.getJsonPayload();
     if (responsePayload is json) {
         log:printInfo("Response : " + responsePayload.toString());
@@ -59,6 +73,8 @@ public function main() {
         log:printError("Expected response payload not received",
           err = responsePayload);
     }
+
+    // Fetch required promise responses.
     foreach var p in promises {
         http:PushPromise promise = <http:PushPromise> p;
         http:Response promisedResponse = new;
