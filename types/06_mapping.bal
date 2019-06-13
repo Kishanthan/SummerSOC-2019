@@ -1,3 +1,4 @@
+import ballerina/io;
 // a simple record
 type Person record {
    string name;
@@ -16,9 +17,13 @@ public function main () {
 
     // access fields with field-access
     p.age = 45;
+    p.address = address;
     json j1 = info.name;
 
     // access fields with index-access
     p["age"] = 45;
     json j2 = info["name"];
+
+    io:println(p);
+    io:println(j2);
 }

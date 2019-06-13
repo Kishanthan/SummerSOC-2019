@@ -1,10 +1,29 @@
+import ballerina/io;
+
+// Declare a module-level variable.
 int total = 99;
 
-final string OK = "ok";
+// Declare a constant.
+const string OK = "ok";
 
-public const int status = 1;
+// Declare a `public` constant.
+public const int COUNT = 1;
+
+// Declare a final variable.
+// Value of the `final` variable is frozen. Once a value is assigned to a final
+// variable it becomes immutable. All parameters of a function call are
+// implicitly final.
+final int status = 1;
 
 public function main() {
-    string name = "Ballerina";
-    var age = 3;
+
+    // Access a global variable.
+    io:println(total);
+
+    // Access a public constant.
+    io:println(COUNT);
+
+    // This is a local variable.
+    boolean available = false;
+    io:println(available);
 }

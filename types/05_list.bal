@@ -1,3 +1,5 @@
+import ballerina/io;
+
 public function main () {
 
     // Arrays.
@@ -9,11 +11,14 @@ public function main () {
     string[*] c = ["apple", "orange"];
 
     // Tuple
-    (int, string, int) tuple = (1, "value", 5);
-    string value = tuple[1];
+    (int, string, int) tuple1 = (1, "its a string value", 5);
+    string value = tuple1[1];
 
+    io:println(value);
+
+    (string, int, boolean) tuple2 = getTupleData();
 }
 
-function getMultipleData () returns (string, int, boolean) {
+function getTupleData() returns (string, int, boolean) {
     return ("aString", 10, false);
 }

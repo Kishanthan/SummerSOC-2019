@@ -1,3 +1,4 @@
+import ballerina/io;
 // a simple function
 function simpleFunc(int a) returns int {
     return a + 1;
@@ -5,10 +6,12 @@ function simpleFunc(int a) returns int {
 
 // required and defaultable parameters
 function defaultableParams(int a, string op = "inc") {
+    io:println(op);
 }
 
 // rest parameter
 function restParams(int a, string... names) {
+    io:println(names[2]);
 }
 
 public function main() {

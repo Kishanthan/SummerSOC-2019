@@ -1,35 +1,24 @@
+import ballerina/io;
+
 public function main() {
-    
-    // a simple XML
-    xml x1 = xml`<name>John</name>`;
+    // The XML element. There can only be one root element.
+    xml x1 = xml `<book>The Lost World</book>`;
+    io:println(x1);
 
-    // an XML with namespaces
-    xmlns "http://wso2.com" as ns0;
-    xml x2 = xml `<name id="123" status="single">
-                      <ns0:fname>John</ns0:fname>
-                      <ns0:lname>John</ns0:lname>
-                  </name>`;
+    // The XML text.
+    xml x2 = xml `Hello, world!`;
+    io:println(x2);
 
-    // an XML literal with interpolation
-    string lastName = "Doe";
-    xml x3 = xml`<lname>{{lastName}}</lname>`;
+    // The XML comment.
+    xml x3 = xml `<!--I am a comment-->`;
+    io:println(x3);
 
-    // concatenating XML
-    xml x4 = x1 + x2 + x3;
+    // The XML processing instruction.
+    xml x4 = xml `<?target data?>`;
+    io:println(x4);
 
-    // get children by name
-    xml fiirstNames1 = x2[ns0:fname];
-    xml fiirstNames2 = x2["{http://wso2.com}fname"];
-
-    // get all the children
-    xml allChildren = x2.*;
-
-    // get an attribute
-    string id = x2@["id"];
-
-    // get all the attributes as a map
-    map<string> attributes = <map<string>> x2@;
-
-    // set children
-    x1.setChildren(x3);
+    // Multiple XML items can be combined to form a sequence of XML. The resulting sequence is another XML on its own.
+    xml x5 = x1 + x2 + x3 + x4;
+    io:println("\nResulting XML sequence:");
+    io:println(x5);
 }
