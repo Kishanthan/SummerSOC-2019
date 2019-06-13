@@ -1,60 +1,50 @@
 import ballerina/io;
 import ballerina/log;
 
-function getReadableRecordChannel(string filePath, string encoding, string rs, string fs) returns (io:ReadableTextRecordChannel) {
-    io:ReadableByteChannel byteChannel = io:openReadableFile(filePath);
-    io:ReadableCharacterChannel characterChannel = new(byteChannel, encoding);
-    io:ReadableTextRecordChannel delimitedRecordChannel = new(characterChannel,
-                                                              rs = rs,
-                                                              fs = fs);
-    return delimitedRecordChannel;
-}
-function getWritableRecordChannel(string filePath, string encoding, string rs, string fs) returns (io:WritableTextRecordChannel) {
-    io:WritableByteChannel byteChannel = io:openWritableFile(filePath);
-    io:WritableCharacterChannel characterChannel = new(byteChannel, encoding);
-    io:WritableTextRecordChannel delimitedRecordChannel = new(characterChannel,
-                                                              rs = rs,
-                                                              fs = fs);
-    return delimitedRecordChannel;
-}
-function process(io:ReadableTextRecordChannel srcRecordChannel, io:WritableTextRecordChannel dstRecordChannel) returns error? {
-    while (srcRecordChannel.hasNext()) {
-        string[] records = check srcRecordChannel.getNext();
-        var result = check dstRecordChannel.write(records);
+// Copies content from the source channel to a destination channel.
+function copy(io:ReadableByteChannel src, io:WritableByteChannel dst) returns error? {
+    int readCount = 1;
+    byte[] readContent;
+    // Here is how to read all the content from
+    // the source and copy it to the destination.
+    while (readCount > 0) {
+        // The operation attempts to read a maximum of 1000 bytes and returns
+        // with the available content, which could be < 1000.
+        (byte[], int) result = check src.read(1000);
+        (readContent, readCount) = result;
+        // The operation writes the given content into the channel.
+        var writeResult = check dst.write(readContent, 0);
     }
     return;
 }
 
-function closeRc(io:ReadableTextRecordChannel rc) {
-    var closeResult = rc.close();
-    if (closeResult is error) {
-        log:printError("Error occured while closing the channel: ",
-                       err = closeResult);
-    }
-}
-
-function closeWc(io:WritableTextRecordChannel wc) {
-    var closeResult = wc.close();
-    if (closeResult is error) {
-        log:printError("Error occured while closing the channel: ",
-                       err = closeResult);
+// Closes a given readable or writable byte channel.
+function close(io:ReadableByteChannel|io:WritableByteChannel ch) {
+    abstract object {
+        public function close() returns error?;
+    } channelResult = ch;
+    var cr = channelResult.close();
+    if (cr is error) {
+        log:printError("Error occurred while closing the channel: ", err = cr);
     }
 }
 
 public function main() {
-    string srcFileName = "./files/sample.txt";
-    string dstFileName = "./files/sampleResponse.txt";
-    io:ReadableTextRecordChannel srcRecordChannel =
-    getReadableRecordChannel(srcFileName, "UTF-8", "\\r?\\n", ",");
-    io:WritableTextRecordChannel dstRecordChannel =
-    getWritableRecordChannel(dstFileName, "UTF-8", "\r\n", "|");
-    io:println("Start processing the text file from " + srcFileName + " to the text file in " + dstFileName);
-    var result = process(srcRecordChannel, dstRecordChannel);
+    string srcPath = "./files/ballerina.txt";
+    string dstPath = "./files/ballerinaCopy.txt";
+    // Initializes the readable byte channel.
+    io:ReadableByteChannel srcCh = io:openReadableFile(srcPath);
+    // Initializes the writable byte channel.
+    io:WritableByteChannel dstCh = io:openWritableFile(dstPath);
+    io:println("Start to copy files from " + srcPath + " to " + dstPath);
+    // Copy the source byte channel to the target byte channel.
+    var result = copy(srcCh, dstCh);
     if (result is error) {
-        log:printError("An error occurred while processing the records: ", err = result);
+        log:printError("error occurred while performing copy ", err = result);
     } else {
-        io:println("Processing completed. The processed file is located in ", dstFileName);
+        io:println("File copy completed. The copied file is located at " + dstPath);
     }
-    closeRc(srcRecordChannel);
-    closeWc(dstRecordChannel);
+    // Close the connections.
+    close(srcCh);
+    close(dstCh);
 }

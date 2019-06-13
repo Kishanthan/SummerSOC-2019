@@ -1,0 +1,8 @@
+A compiled, transactional, statically and strongly typed programming language with textual and graphical syntaxes. 
+Ballerina incorporates fundamental concepts of distributed system integration and offers a type safe, concurrent 
+environment to implement microservices.
+
+A type system that embraces network payload variability with primitive, object, union, and tuple types.
+
+An execution model composed of lightweight parallel worker units that are non-blocking where no function can lock 
+an executing thread manifesting sequence concurrency.

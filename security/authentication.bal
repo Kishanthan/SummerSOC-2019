@@ -10,10 +10,10 @@ http:Client clientEP1 = new("https://api.bitbucket.org/2.0", config = {
                     tokenUrl: "https://bitbucket.org/site/oauth2/access_token",
                     clientId: "mMNWS9PLmM93V5WHjC",
                     clientSecret: "jLY6xPY3ER4bNTspaGu6fb7kahhs7kUa"
-                }
             }
         }
-    });
+    }
+});
 
 http:Client clientEP2 = new("https://api.bitbucket.org/2.0", config = {
         auth: {
@@ -28,11 +28,11 @@ http:Client clientEP2 = new("https://api.bitbucket.org/2.0", config = {
                     clientSecret: "jLY6xPY3ER4bNTspaGu6fb7kahhs7kUa",
                     refreshConfig: {
                         refreshUrl: "https://bitbucket.org/site/oauth2/access_token"
-                    }
                 }
             }
         }
-    });
+    }
+});
 
 
 public function main() {
