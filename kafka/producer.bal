@@ -1,82 +1,19 @@
-import ballerina/http;
 import wso2/kafka;
 
-// Constants to store admin credentials
-final string ADMIN_USERNAME = "Admin";
-final string ADMIN_PASSWORD = "Admin";
-
-// Kafka producer configurations
-kafka:ProducerConfig producerConfigs = {
+kafka:ProducerConfig producerConfig = {
+    // Here we create a producer configs with optional parameters client.id - used for broker side logging.
+    // acks - number of acknowledgments for request complete,
+    // noRetries - number of retries if record send fails.
     bootstrapServers: "localhost:9092",
-    clientID: "basic-producer",
-    acks: "all",
-    noRetries: 3
+    clientID:"basic-producer",
+    acks:"all",
+    noRetries:3
 };
 
-kafka:SimpleProducer kafkaProducer = new(producerConfigs);
+kafka:SimpleProducer kafkaProducer = new(producerConfig);
 
-// HTTP service endpoint
-listener http:Listener httpListener = new(9090);
-
-@http:ServiceConfig { basePath: "/product" }
-service productAdminService on httpListener {
-
-    @http:ResourceConfig { methods: ["POST"], consumes: ["application/json"], produces: ["application/json"] }
-    resource function updatePrice(http:Caller caller, http:Request request) {
-        http:Response response = new;
-        float newPriceAmount = 0.0;
-        json|error reqPayload = request.getJsonPayload();
-
-        if (reqPayload is error) {
-            response.statusCode = 400;
-            response.setJsonPayload({ "Message": "Invalid payload - Not a valid JSON payload" });
-            var result = caller->respond(response);
-        } else {
-            json username = reqPayload.Username;
-            json password = reqPayload.Password;
-            json productName = reqPayload.Product;
-            json newPrice = reqPayload.Price;
-
-            // If payload parsing fails, send a "Bad Request" message as the response
-            if (username == null || password == null || productName == null || newPrice == null) {
-                response.statusCode = 400;
-                response.setJsonPayload({ "Message": "Bad Request: Invalid payload" });
-                var responseResult = caller->respond(response);
-            }
-
-            // Convert the price value to float
-            var result = float.convert(newPrice.toString());
-            if (result is error) {
-                response.statusCode = 400;
-                response.setJsonPayload({ "Message": "Invalid amount specified" });
-                var responseResult = caller->respond(response);
-            } else {
-                newPriceAmount = result;
-            }
-
-            // If the credentials does not match with the admin credentials,
-            // send an "Access Forbidden" response message
-            if (username.toString() != ADMIN_USERNAME || password.toString() != ADMIN_PASSWORD) {
-                response.statusCode = 403;
-                response.setJsonPayload({ "Message": "Access Forbidden" });
-                var responseResult = caller->respond(response);
-            }
-
-            // Construct and serialize the message to be published to the Kafka topic
-            json priceUpdateInfo = { "Product": productName, "UpdatedPrice": newPriceAmount };
-            byte[] serializedMsg = priceUpdateInfo.toString().toByteArray("UTF-8");
-
-            // Produce the message and publish it to the Kafka topic
-            var sendResult = kafkaProducer->send(serializedMsg, "product-price", partition = 0);
-            // Send internal server error if the sending has failed
-            if (sendResult is error) {
-                response.statusCode = 500;
-                response.setJsonPayload({ "Message": "Kafka producer failed to send data" });
-                var responseResult = caller->respond(response);
-            }
-            // Send a success status to the admin request
-            response.setJsonPayload({ "Status": "Success" });
-            var responseResult = caller->respond(response);
-        }
-    }
+public function main() returns error? {
+    string msg = "Hello World Advance";
+    byte[] serializedMsg = msg.toByteArray("UTF-8");
+    check kafkaProducer->send(serializedMsg, "test-kafka-topic");
 }

@@ -1,16 +1,18 @@
 import ballerina/io;
 import wso2/kafka;
 import ballerina/encoding;
+import ballerina/internal;
 
 // Kafka consumer listener configurations
 kafka:ConsumerConfig consumerConfig = {
-    bootstrapServers: "localhost:9092, localhost:9093",
+    bootstrapServers: "localhost:9092",
     // Consumer group ID
-    groupId: "inventorySystem",
+    groupId: "group-id",
     // Listen from topic 'product-price'
-    topics: ["product-price"],
+    topics: ["test-kafka-topic"],
     // Poll every 1 second
-    pollingInterval: 1000
+    pollingInterval: 1000,
+    autoCommit:false
 };
 
 // Create kafka listener
@@ -23,16 +25,17 @@ service kafkaService on consumer {
     // Triggered whenever a message added to the subscribed topic
     resource function onMessage(kafka:SimpleConsumer simpleConsumer, kafka:ConsumerRecord[] records) {
         // Dispatched set of Kafka records to service, We process each one by one.
-        foreach var entry in records {
-            byte[] serializedMsg = entry.value;
-            // Convert the serialized message to string message
-            string msg = encoding:byteArrayToString(serializedMsg);
-            io:println("New message received from the product admin");
-            // log the retrieved Kafka record
-            io:println("Topic: " + entry.topic + "; Received Message: " + msg);
-            // Mock logic
-            // Update the database with the new price for the specified product
-            io:println("Database updated with the new price of the product");
+        foreach var kafkaRecord in records {
+            processKafkaRecord(kafkaRecord);
         }
+        // Commit offsets returned for returned records, marking them as consumed.
+        var result = consumer->commit();
     }
+}
+
+function processKafkaRecord(kafka:ConsumerRecord kafkaRecord) {
+    byte[] serializedMsg = kafkaRecord.value;
+    string msg = encoding:byteArrayToString(serializedMsg);
+    // Print the retrieved Kafka record.
+    io:println("Topic: " + kafkaRecord.topic + " Received Message: " + msg);
 }
