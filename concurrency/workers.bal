@@ -1,35 +1,37 @@
 import ballerina/io;
-import ballerina/runtime;
 
+// In Ballerina, each function consists of one or more workers, which are 
+// independent parallel execution paths called strands. If explicit workers are
+// not mentioned within worker blocks, the function code will belong to a
+// single implicit default worker. The default worker in each function wil be
+// executed in the same strand as the caller function.
 public function main() {
+    io:println("Worker execution started");
+
+    // This block belongs to the worker `w1`.
     worker w1 {
-        int i = 100;
-        float k = 2.34;
-
-        (i, k) -> w2;
-        io:println("[w1 -> w2] i: ", i, " k: ", k);
-
-        json j = {};
-        j = <- w2;
-        string jStr = j.toString();
-        io:println("[w1 <- w2] j: ", jStr);
-        io:println("[w1 ->> w2] i: ", i);
+        // Calculate sum(n)
+        int n = 10000000;
+        int sum = 0;
+        foreach var i in 1...n {
+            sum += i;
+        }
+        io:println("sum of first ", n, " positive numbers = ", sum);
     }
 
+    // This block belongs to the worker `w2`.
     worker w2 {
-        int iw;
-        float kw;
-        (int, float) vW1 = (0, 1.0);
-        vW1 = <- w1;
-        (iw, kw) = vW1;
-        io:println("[w2 <- w1] iw: " + iw + " kw: " + kw);
-
-        json jw = {
-            "name": "Ballerina"
-        };
-        io:println("[w2 -> w1] jw: ", jw);
-        jw -> w1;
+        // Calculate sum(n^2)
+        int n = 10000000;
+        int sum = 0;
+        foreach var i in 1...n {
+            sum += i * i;
+        }
+        io:println("sum of squares of first ", n, " positive numbers = ", sum);
     }
 
-    wait w1;
+    // Wait for both workers to finish.
+    _ = wait {w1, w2};
+
+    io:println("Worker execution finished");
 }
