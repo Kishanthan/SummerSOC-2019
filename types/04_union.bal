@@ -1,6 +1,6 @@
 import ballerina/io;
 public function main () {
-    // Optional types of string, int and nil
+    // Union type of string, int and nil
     // The value can take any of the type
     string|int|() value = 5;
     value = "foo";

@@ -1,4 +1,5 @@
 import ballerina/io;
+
 // a simple record
 type Person record {
    string name;
