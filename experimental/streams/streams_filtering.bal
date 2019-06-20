@@ -1,6 +1,7 @@
 import ballerina/io;
 import ballerina/runtime;
 
+// Create a `record` type that represents the `Person`.
 type Person record {
     string name;
     int age;
@@ -9,18 +10,25 @@ type Person record {
     string phoneNo;
 };
 
+// Create a `record` type that represents the `Child`.
 type Child record {
     string name;
     int age;
     string city;
 };
 
+
 int index = 0;
+
+// Streams that are based on the constraint types created above.
 stream<Person> personStream = new;
 stream<Child> childrenStream = new;
 
 Child[] globalChildrenArray = [];
+
 function initFilterQuery() {
+    // Streaming query that filters events based on the attribute age.
+    // Filtered events are pushed to a stream called `childrenStream`.
     forever {
         from personStream where personStream.age <= 16
         select personStream.name, personStream.age,
@@ -34,6 +42,8 @@ function initFilterQuery() {
 }
 
 public function main() {
+
+    // Sample events that represent a different person.
     Person[] personArray = [];
     Person t1 = { name: "Raja", age: 12, status: "single",
                     address: "Mountain View", phoneNo: "+19877386134" };
@@ -45,10 +55,15 @@ public function main() {
     personArray[0] = t1;
     personArray[1] = t2;
     personArray[2] = t3;
+
+    // Deploys the filter streaming query.
     initFilterQuery();
 
+    // The `childrenStream` subscribes to the `printChildren` function. Whenever the
+    // `childrenStream` stream receives a valid event, this function is called.
     childrenStream.subscribe(printChildren);
 
+    // Simulate the sample event that represents the Person.
     foreach var t in personArray {
         personStream.publish(t);
     }
@@ -62,11 +77,13 @@ public function main() {
         }
     }
 }
+
 function printChildren(Child child) {
     io:println("Child detected. Child name : " +
             child.name + ", age : " + child.age + " and from : " + child.city);
     addToGlobalChildrenArray(child);
 }
+
 function addToGlobalChildrenArray(Child e) {
     globalChildrenArray[index] = e;
     index = index + 1;
