@@ -26,8 +26,8 @@ public function main() {
     xmlns "http://ballerina.com/";
     xmlns "http://ballerina.com/aa" as ns0;
 
-    // Create an XML element. Previously defined namespaces will be added to the element. 
-    // The defined prefixes can be applied to elements and attributes inside the element. 
+    // Create an XML element. Previously defined namespaces will be added to the element.
+    // The defined prefixes can be applied to elements and attributes inside the element.
     xml x6 = xml `<book ns0:status="available">
                     <ns0:name>Sherlock Holmes</ns0:name>
                     <author>Sir Arthur Conan Doyle</author>

@@ -8,6 +8,7 @@ type Person record {
 };
 
 public function main () {
+    // record
     Person p = { name:"John", age:50 };
 
     // map
