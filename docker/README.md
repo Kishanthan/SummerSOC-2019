@@ -29,3 +29,6 @@ $ docker run -d -p 9090:9090 helloworld:v1.0
 $ curl http://localhost:9090/helloWorld/sayHello
 Hello World from Docker!
 ```
+
+#### For information and more examples
+[https://github.com/ballerinax/docker](https://github.com/ballerinax/docker) 

@@ -78,3 +78,6 @@ $ minikube ip
 $ curl https://192.168.99.100:<32417>/helloWorld/config/jane -k
 {userId: jane3@ballerina.com, groups: esb}
 ```
+
+#### For information and more examples
+[https://github.com/ballerinax/kubernetes](https://github.com/ballerinax/kubernetes) 
