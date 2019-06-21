@@ -2,7 +2,7 @@ import ballerina/config;
 import ballerina/http;
 import wso2/twitter;
 
-twitter:Client tw = new({
+twitter:Client twitterClient = new({
     clientId: config:getAsString("clientId"),
     clientSecret: config:getAsString("clientSecret"),
     accessToken: config:getAsString("accessToken"),
@@ -21,7 +21,7 @@ service hello on new http:Listener(9090) {
     }
     resource function hi (http:Caller caller, http:Request request) {
         string payload = checkpanic request.getTextPayload();
-        twitter:Status st = checkpanic tw->tweet(payload);
+        twitter:Status st = checkpanic twitterClient->tweet(payload);
         checkpanic caller->respond("Tweeted: " + untaint st.text);
     }
 }

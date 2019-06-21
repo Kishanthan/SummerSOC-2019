@@ -23,8 +23,8 @@ service echoServer on new  socket:Listener(61598) {
                     new io:ReadableCharacterChannel(byteChannel, "UTF-8");
                 var str = characterChannel.read(20);
                 if (str is string) {
-                    string reply = untaint str + " back";
-                    byte[] payloadByte = reply.toByteArray("UTF-8");
+                    string replyMsg = untaint str + " back";
+                    byte[] payloadByte = replyMsg.toByteArray("UTF-8");
                     // Send the reply to the `caller`.
                     var writeResult = caller->write(payloadByte);
                     if (writeResult is int) {

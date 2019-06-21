@@ -33,18 +33,18 @@ public function main() {
     string srcPath = "./files/ballerina.txt";
     string dstPath = "./files/ballerinaCopy.txt";
     // Initializes the readable byte channel.
-    io:ReadableByteChannel srcCh = io:openReadableFile(srcPath);
+    io:ReadableByteChannel readChannel = io:openReadableFile(srcPath);
     // Initializes the writable byte channel.
-    io:WritableByteChannel dstCh = io:openWritableFile(dstPath);
+    io:WritableByteChannel writeChannel = io:openWritableFile(dstPath);
     io:println("Start to copy files from " + srcPath + " to " + dstPath);
     // Copy the source byte channel to the target byte channel.
-    var result = copy(srcCh, dstCh);
+    var result = copy(readChannel, writeChannel);
     if (result is error) {
         log:printError("error occurred while performing copy ", err = result);
     } else {
         io:println("File copy completed. The copied file is located at " + dstPath);
     }
     // Close the connections.
-    close(srcCh);
-    close(dstCh);
+    close(readChannel);
+    close(writeChannel);
 }

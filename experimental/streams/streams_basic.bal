@@ -14,13 +14,13 @@ public function main() {
     employeeStream.subscribe(printEmployeeName);
 
     // Publish `Employee` values to the `stream`.
-    Employee e1 = { id: 1, name: "Jane" };
-    Employee e2 = { id: 2, name: "Anne" };
-    Employee e3 = { id: 3, name: "John" };
+    Employee jane = { id: 1, name: "Jane" };
+    Employee anne = { id: 2, name: "Anne" };
+    Employee john = { id: 3, name: "John" };
 
-    employeeStream.publish(e1);
-    employeeStream.publish(e2);
-    employeeStream.publish(e3);
+    employeeStream.publish(jane);
+    employeeStream.publish(anne);
+    employeeStream.publish(john);
 
     // Allow for receipt by subscribers. The `printEmployeeName()` function should be invoked for each published value.
     runtime:sleep(1000);
@@ -51,7 +51,7 @@ public function main() {
     // Publish values to the `stream`.
     updateStream.publish("Hello Ballerina!");
     updateStream.publish(1.0);
-    updateStream.publish(e1);
+    updateStream.publish(jane);
 
     // Wait for the subscriber to receive the values. The `printEvent()` function should be invoked for each published
     // value.
@@ -60,8 +60,7 @@ public function main() {
 
 // This function accepts `Employee` values and is used to subscribe to a stream.
 function printEmployeeName(Employee employee) {
-    io:println("Employee event received for Employee Name: "
-                    + employee.name);
+    io:println("Employee event received for Employee Name: " + employee.name);
 }
 
 // This function accepts `float` values and is used to subscribe to a stream.

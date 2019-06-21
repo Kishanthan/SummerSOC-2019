@@ -18,8 +18,6 @@ type Child record {
 };
 
 
-int index = 0;
-
 // Streams that are based on the constraint types created above.
 stream<Person> personStream = new;
 stream<Child> childrenStream = new;
@@ -64,15 +62,15 @@ public function main() {
     childrenStream.subscribe(printChildren);
 
     // Simulate the sample event that represents the Person.
-    foreach var t in personArray {
-        personStream.publish(t);
+    foreach var person in personArray {
+        personStream.publish(person);
     }
 
     int count = 0;
     while(true) {
         runtime:sleep(500);
         count += 1;
-        if((globalChildrenArray.length()) == 2 || count == 10) {
+        if (count == 10) {
             break;
         }
     }
@@ -81,10 +79,4 @@ public function main() {
 function printChildren(Child child) {
     io:println("Child detected. Child name : " +
             child.name + ", age : " + child.age + " and from : " + child.city);
-    addToGlobalChildrenArray(child);
-}
-
-function addToGlobalChildrenArray(Child e) {
-    globalChildrenArray[index] = e;
-    index = index + 1;
 }
