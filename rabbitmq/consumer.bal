@@ -12,7 +12,7 @@ listener rabbitmq:ChannelListener channelListener = new(connection);
     }
 }
 // Attaches the service to the listener.
-service testSimpleConsumer on channelListener {
+service simpleConsumer on channelListener {
 
     // Gets triggered when a message is received by the queue.
     resource function onMessage(string message) {
