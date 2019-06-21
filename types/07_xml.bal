@@ -21,4 +21,17 @@ public function main() {
     xml x5 = x1 + x2 + x3 + x4;
     io:println("\nResulting XML sequence:");
     io:println(x5);
+
+    // Define namespaces. These are visible to all the XML literals defined from this point onwards.  
+    xmlns "http://ballerina.com/";
+    xmlns "http://ballerina.com/aa" as ns0;
+
+    // Create an XML element. Previously defined namespaces will be added to the element. 
+    // The defined prefixes can be applied to elements and attributes inside the element. 
+    xml x6 = xml `<book ns0:status="available">
+                    <ns0:name>Sherlock Holmes</ns0:name>
+                    <author>Sir Arthur Conan Doyle</author>
+                    <!--Price: $10-->
+                  </book>`;
+    io:println(x6);
 }
