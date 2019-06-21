@@ -24,8 +24,7 @@ service basic on new http:WebSocketListener(9090) {
     // This `resource` is triggered when a new text frame is received from a client.
     resource function onText(http:WebSocketCaller caller, string text,
                                 boolean finalFrame) {
-        io:println("\ntext message: " + text + " & final fragment: "
-                                                        + finalFrame);
+        io:println("\ntext message: " + text + " & final fragment: " + finalFrame);
 
         if (text == "ping") {
             io:println("Pinging...");
@@ -38,8 +37,7 @@ service basic on new http:WebSocketListener(9090) {
                             reason = "You asked me to close the connection",
                             timeoutInSecs = 0);
             if (result is error) {
-                log:printError("Error occurred when closing connection",
-                                                                    err = result);
+                log:printError("Error occurred when closing connection", err = result);
             }
         } else {
             var err = caller->pushText("You said: " + text);
@@ -96,8 +94,7 @@ service basic on new http:WebSocketListener(9090) {
     }
 
     // This resource is triggered when a client connection is closed from the client side.
-    resource function onClose(http:WebSocketCaller caller, int statusCode,
-                                string reason) {
+    resource function onClose(http:WebSocketCaller caller, int statusCode, string reason) {
         io:println(string `Client left with ${statusCode} because ${reason}`);
     }
 }
