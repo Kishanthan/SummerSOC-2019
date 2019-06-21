@@ -11,7 +11,7 @@ public function main() {
     // Handle the response.
     handleResponse(response);
 
-    io:println("\nPOST request:");
+    io:println("POST request:");
     // Set a `string` payload to the message to be sent to the endpoint.
     http:Request req = new;
     req.setPayload("POST: Hello World");
@@ -20,19 +20,13 @@ public function main() {
     // Handle the response.
     handleResponse(response);
 
-    io:println("\nDELETE request:");
+    io:println("DELETE request:");
     // Set a `string` payload to the message to be sent to the endpoint.
     req.setPayload("DELETE: Hello World");
     // Send a `DELETE` request to the specified endpoint.
     response = clientEndpoint->delete("/delete", req);
     // Handle the response.
     handleResponse(response);
-
-    io:println("\nUse custom HTTP verbs:");
-    // Set a `string` payload to the message, which will be sent to the endpoint.
-    req.setPayload("CUSTOM: Hello World");
-    // Use the `execute()` remote function for custom HTTP verbs.
-    response = clientEndpoint->execute("COPY", "/get", req);
 
     // Reinitialize the request.
     req = new;
@@ -65,4 +59,6 @@ function handleResponse(http:Response|error response) {
     } else {
         io:println("Error when calling the backend: ", response.reason());
     }
+
+    io:println("\n");
 }

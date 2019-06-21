@@ -46,8 +46,7 @@ service hello on new http:Listener(9090) {
         body: "student",
         consumes: ["application/json"]
     }
-    resource function bindStruct(http:Caller caller, http:Request req,
-                                 Student student) {
+    resource function bindStruct(http:Caller caller, http:Request req, Student student) {
         //Accesses the fields of the record `Student`.
         string name = student.Name;
         int grade = student.Grade;
@@ -71,9 +70,8 @@ service hello on new http:Listener(9090) {
 function isValid(boolean|error result) returns boolean {
     if (result is boolean) {
         return result;
-    } if (result is error) {
+    } else {
         log:printError(result.reason(), err = result);
         return false;
     }
-    return false;
 }

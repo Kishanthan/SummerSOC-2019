@@ -3,12 +3,12 @@ import ballerina/log;
 
 // Create an endpoint with port 7090 to accept HTTP requests.
 // HTTP version is set to 2.0.
-listener http:Listener http2ServiceEP = new(7090, config = { httpVersion: "2.0" });
+listener http:Listener http2Listener = new(7090, config = { httpVersion: "2.0" });
 
 @http:ServiceConfig {
     basePath: "/http2Service"
 }
-service http2Service on http2ServiceEP {
+service http2Service on http2Listener {
 
     @http:ResourceConfig {
         path: "/"
