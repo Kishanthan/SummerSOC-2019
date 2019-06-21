@@ -1,10 +1,12 @@
 #### Create a `ballerina.conf` file with following content in the same directory as kubernetes_deployment.bal file.
+```
 [john]
 userid="john@ballerina.com"
 groups="apim,esb"
 [jane]
 userid="jane3@ballerina.com"
 groups="esb"
+```
 
 
 #### Build the ballerina program
