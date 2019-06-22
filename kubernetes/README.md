@@ -61,7 +61,7 @@ helloworld-ballerina-conf-config-map   1         5m
 
 $ kubectl get ingress
 NAME                        HOSTS                 ADDRESS   PORTS     AGE
-helloworldep-ingress        abc.com                         80, 443   183d
+helloworldep-ingress        abc.com                         80, 443   20s
 ```
 
 #### Using ingress
