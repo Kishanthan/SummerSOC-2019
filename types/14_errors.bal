@@ -36,7 +36,7 @@ public function main() returns error? {
     json acc3 = check getAccount(25);
     io:println("Account balance : ", acc3.balance);
 
-    // Handling Program/Runtime errors.
+    // Option 4: Handling Program/Runtime panics.
     json|error value = trap getAccount(-1000);
     if (value is error) {
         // Handle error.
