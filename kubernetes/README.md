@@ -58,25 +58,25 @@ helloworldep-svc    NodePort    10.109.125.193   <none>        9090:32417/TCP   
 $ kubectl get cm
 NAME                                   DATA      AGE
 helloworld-ballerina-conf-config-map   1         5m
+
+$ kubectl get ingress
+NAME                        HOSTS                 ADDRESS   PORTS     AGE
+helloworldep-ingress        abc.com                         80, 443   183d
+```
+
+#### Using ingress
+Add /etc/hosts entry to match hostname. (127.0.0.1 is only applicable to docker for mac users. Other users should map the hostname with correct ip address from kubectl get ingress command.)
+```
+127.0.0.1 abc.com
 ```
 
 #### Access the service
-##### Change the port <32417> to Nodeport of the service.
 ```
-$ curl https://localhost:<32417>/helloWorld/config/jane -k
+$ curl http://abc.com/helloWorld/config/jane -k
 {userId: jane3@ballerina.com, groups: esb}
 
-$ curl https://localhost:<32417>/helloWorld/config/john -k
+$ curl http://abc.com/helloWorld/config/john -k
 {userId: john@ballerina.com, groups: apim,esb}
-```
-
-##### If you are using minikube, IP address should be changed according to output of `minikube ip` command.
-```
-$ minikube ip
-192.168.99.100
-
-$ curl https://192.168.99.100:<32417>/helloWorld/config/jane -k
-{userId: jane3@ballerina.com, groups: esb}
 ```
 
 #### For information and more examples
