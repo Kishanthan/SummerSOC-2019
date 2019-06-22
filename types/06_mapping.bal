@@ -5,7 +5,15 @@ type Person record {
    string name;
    int age;
    map<string> address = {};
+   string...;
 };
+
+// a closed record
+type Student record {|
+   string name;
+   int age;
+   map<string> subjects = {};
+|};
 
 public function main () {
     // record
