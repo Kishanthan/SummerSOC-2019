@@ -52,7 +52,8 @@ service hello on new http:Listener(9090) {
         int grade = student.Grade;
         http:Response res = new;
         // Performs data validation for input data.
-        if (!isValid(student.Name.matches("[a-zA-Z]+"))) {
+        boolean isValidData = isValid(student.Name.matches("[a-zA-Z]+"));
+        if (!isValidData) {
             res.statusCode = 400;
             res.setPayload("Student name contains invalid data");
         } else {
