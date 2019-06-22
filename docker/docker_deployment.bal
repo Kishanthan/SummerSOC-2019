@@ -6,7 +6,7 @@ import ballerinax/docker;
 @docker:Expose {}
 listener http:Listener helloWorldEP = new(9090);
 
-//Adding the `@docker:Confing{}` annotation to a service modifies the generated Docker image and Dockerfile.
+//Adding the `@docker:Config{}` annotation to a service modifies the generated Docker image and Dockerfile.
 //This sample generates a Docker image as `helloworld:v1.0.0`.
 @docker:Config {
     //Docker image name should be helloworld.

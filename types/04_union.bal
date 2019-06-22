@@ -1,4 +1,5 @@
 import ballerina/io;
+
 public function main () {
     // Union type of string, int and nil
     // The value can take any of the type
