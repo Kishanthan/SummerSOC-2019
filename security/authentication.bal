@@ -8,8 +8,8 @@ http:Client clientEP1 = new("https://api.bitbucket.org/2.0", config = {
                 grantType: http:CLIENT_CREDENTIALS_GRANT,
                 config: {
                     tokenUrl: "https://bitbucket.org/site/oauth2/access_token",
-                    clientId: "mMNWS9PLmM93V5WHjC",
-                    clientSecret: "jLY6xPY3ER4bNTspaGu6fb7kahhs7kUa"
+                    clientId: "Client_ID_Value",
+                    clientSecret: "Client_Secret_Value"
             }
         }
     }
@@ -24,8 +24,8 @@ http:Client clientEP2 = new("https://api.bitbucket.org/2.0", config = {
                     tokenUrl: "https://bitbucket.org/site/oauth2/access_token",
                     username: "b7a.demo@gmail.com",
                     password: "ballerina",
-                    clientId: "mMNWS9PLmM93V5WHjC",
-                    clientSecret: "jLY6xPY3ER4bNTspaGu6fb7kahhs7kUa",
+                    clientId: "Client_ID_Value",
+                    clientSecret: "Client_Secret_Value"
                     refreshConfig: {
                         refreshUrl: "https://bitbucket.org/site/oauth2/access_token"
                 }
